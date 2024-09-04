@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using MovieWeb.Models;
 
 namespace MovieWeb.Data
 {
@@ -9,5 +10,9 @@ namespace MovieWeb.Data
             : base(options)
         {
         }
+
+        public DbSet<Movie> Movie { get; set; }
+
+        public DbSet<UserMovie> UserMovie { get; set; }
     }
 }

@@ -1,0 +1,34 @@
+﻿@model MovieWeb.Models.Movie
+@using MovieWeb.Extensions
+@using MovieWeb.Models
+
+<div class="row offset-1 mt-5">
+    <div class="col col-md-10">
+        <div class="card text-center">
+            <div class="card-header">
+                @(((Category)Model.CategoryId).GetDisplayName())             
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">@Model.Title</h5>
+                @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                {
+                    <img src="@($"/images/{Model.ImageUrl}")" class="mt-4 img-thumbnail" />                
+                }              
+                <p class="card-text mt-4">@Model.Description</p>
+                <div class="d-md-block">
+                    @if (User.IsAuthenticated())
+                    {
+                        <a asp-action="CreateEdit" asp-route-id="@Model.Id" class="btn btn-secondary">Edit</a>
+                    }
+                   
+                    @if (User.IsInRole("Admin"))
+                    {
+                       <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a>
+                    }
+                   
+                </div>
+              
+            </div>
+        </div>
+    </div>
+</div>

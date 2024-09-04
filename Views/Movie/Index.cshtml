@@ -1,0 +1,67 @@
+﻿@using MovieWeb.ViewModels
+@model MovieListViewModel
+@using Microsoft.AspNetCore.Mvc;
+@using MovieWeb.Extensions
+@using System.Security.Claims
+
+
+<div class="row">
+    <div class="col col-md-6">
+        <nav class="navbar navbar-light bg-light">
+            <div class="container-fluid">
+                @if (User.IsInRole("Admin"))
+                {
+                   <a asp-action="CreateEdit" class="navbar-brand">Create movie</a>
+                }
+               
+                <form class="d-flex">
+                    <input asp-for=SearchModel.Search name="searchValue" class="form-control me-3" type="search" placeholder="Search for movie" aria-label="Search">
+                    <select asp-for=SearchModel.CategoryId name="categoryId" class="form-control me-3" asp-items="@Html.GetEnumSelectList<Category>()">
+                        <option value="0">All</option>
+                    </select>
+                    <button type="submit" class="btn btn-secondary">Search</button>                   
+                </form>
+            </div>
+        </nav>
+    </div>
+</div>
+<div class="row mt-5 offset-5">
+    <h5>@($"{@Model.PaginationModel.TotalResult} movies")</h5>
+</div>
+<div class="row mt-lg-4">
+    @foreach (var movie in Model.PaginationModel.CurrentPageList)
+    {
+        string description = movie.Description.Length > 60 ? $"{movie.Description.Substring(0,movie.Description.IndexOf(".")+1)}" : $"{movie.Description}";
+
+        <div class="col col-md-3 mt-5">
+            <div class="card " style="width: 18rem;">
+                @if (!string.IsNullOrEmpty(movie.ImageUrl))
+                {
+                    <img src="@($"/images/{movie.ImageUrl}")" class="card-img-top">                  
+                }              
+                <div class="card-body">
+                    <div class="d-flex">
+                        <h5 class="card-title">@movie.Title</h5>
+                        @if (User.IsAuthenticated())
+                        {
+                            <a asp-all-route-data="@movie.RouteValues(Model, User.UserId())" asp-action="AddToFavourites"><i class="@(movie.Id.MovieExists(User.UserId(), movie.UserMovies)) favourite-star fa-star"></i></a>
+
+                        }                
+                    </div>
+                   
+                    <p class="card-text">@description</p>
+
+                    <div class="d-flex">
+                        <a asp-route-id="@movie.Id" asp-action="Details" class="btn btn-primary">Read more</a>
+                       
+                    </div>
+                  
+                </div>
+            </div>
+        </div>
+    }
+
+</div>
+<div class="row mt-4 offset-5">
+    <partial name="~/Views/Shared/_PaginationPartial.cshtml" model="@Model.PaginationModel" />
+</div>

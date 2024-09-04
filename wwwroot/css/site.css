@@ -20,3 +20,57 @@ html {
 body {
   margin-bottom: 60px;
 }
+.header-container {
+    position: relative;
+    height: 250px;
+    opacity: 0.7;
+    background-image: url('/header-image.png');
+}
+.favourite-star {
+    margin-left: 7px;
+    color: black;
+    font-size: 18px;
+    cursor: pointer;
+    color: #F6BE00;
+}
+    .favourite-star:hover {
+        color: #F6BE00;
+       
+    }
+    .header-wrapper {
+        background-color: black;
+        height: 250px;
+    }
+.header-container-content {
+    position: absolute;
+    top: 0%;
+    margin-top: 112px;
+    text-align: center;
+    color: white;
+    left: 48%;
+    transform: translate(-50%, -50%);
+}
+.nav-item {
+    color:white !important;
+}
+.btn-default {
+    border-color:white;
+    border:2px solid white;
+    color:white !important;
+    margin-top:20px;
+    display:inline-block;
+}
+.btn-default:hover {
+    opacity: 0.6;
+}
+.footer {
+    text-align:center;
+}
+textarea {
+    height:200px;
+}
+@media (min-width: 900px) {
+    .container {
+        min-width: 1600px !important;
+    }
+}

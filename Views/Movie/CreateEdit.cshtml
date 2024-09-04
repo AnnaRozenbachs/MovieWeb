@@ -1,0 +1,45 @@
+﻿@model MovieWeb.ViewModels.MovieViewModel
+   
+<form class="offset-3 row g-3 mt-4"  method="post" asp-action="CreateEdit" enctype="multipart/form-data">
+    <h2>@(Model.Id>0? Model.Title:"Create movie")</h2>
+    <input type="hidden" asp-for=Id />
+    <div class="row g-2">
+        @if (Model.File != null)
+        {
+            <div class="col col-md-4">
+                <img src="@($"/images/{Model.File.FileName}")" class="img-thumbnail" />
+            </div>          
+        }
+        <div class="col col-md-4">
+            <label asp-for=File class="form-label">Image</label>
+            <input asp-for=File type="file" class="form-control" />
+            <span asp-validation-for=File class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row g-2">
+        <div class="col col-md-4">
+            <label asp-for=Title class="form-label">Title</label>
+            <input asp-for=Title class="form-control" />
+            <span asp-validation-for=Title class="text-danger"></span>
+        </div>
+        <div class="col col-md-4">
+            <label asp-for=CategoryId class="form-label">Category</label>
+            <select class="form-control" asp-for=CategoryId asp-items="@Html.GetEnumSelectList<Category>()">
+                <option>Choose category</option>
+            </select>
+            <span asp-validation-for=CategoryId class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row g-2">
+        <div class="col col-md-8">
+            <label asp-for=Description class="form-label">Description</label>
+            <textarea asp-for=Description class="form-control"></textarea>
+            <span asp-validation-for=Description class="text-danger"></span>
+        </div>
+    </div>
+    <div class="d-grid gap-2 d-md-block">
+        <button type="submit" class="btn btn-secondary">Spara</button>
+        <a class="btn btn-outline-dark" asp-action="Index">Tillbaka</a>
+    </div>
+</form>
+

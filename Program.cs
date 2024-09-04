@@ -1,6 +1,11 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MovieWeb.Data;
+using MovieWeb.Models;
+using MovieWeb.Repository;
+using MovieWeb.Service;
+using System;
 
 namespace MovieWeb
 {
@@ -16,9 +21,22 @@ namespace MovieWeb
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
+            builder.Services.AddScoped<IMovieService, MovieService>();
+
+            builder.Services.AddScoped<IMovieRepository, MovieRepository>();
+
+            builder.Services.AddScoped<IUserMovieService, UserMovieService>();
+            builder.Services.AddScoped<IFileService, FileService>();
+            builder.Services.AddScoped<IRepository<Movie>, Repository<Movie>>();
+            builder.Services.AddScoped<IRepository<UserMovie>, Repository<UserMovie>>();
+            builder.Services.AddScoped<IPaginationService<Movie>, PaginationServic<Movie>>();
+
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddHttpContextAccessor();
 
             var app = builder.Build();
 
@@ -36,14 +54,14 @@ namespace MovieWeb
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+         
             app.UseRouting();
 
             app.UseAuthorization();
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Movie}/{action=Index}/{id?}");
             app.MapRazorPages();
 
             app.Run();
