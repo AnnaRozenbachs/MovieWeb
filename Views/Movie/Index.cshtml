@@ -1,8 +1,9 @@
 ﻿@using MovieWeb.ViewModels
 @model MovieListViewModel
 @using Microsoft.AspNetCore.Mvc;
-@using MovieWeb.Extensions
+@using MovieWeb.Helpers
 @using System.Security.Claims
+@using MovieWeb.Extensions
 
 
 <div class="row">
@@ -17,7 +18,7 @@
                 <form class="d-flex">
                     <input asp-for=SearchModel.Search name="searchValue" class="form-control me-3" type="search" placeholder="Search for movie" aria-label="Search">
                     <select asp-for=SearchModel.CategoryId name="categoryId" class="form-control me-3" asp-items="@Html.GetEnumSelectList<Category>()">
-                        <option value="0">All</option>
+                        <option>All</option>
                     </select>
                     <button type="submit" class="btn btn-secondary">Search</button>                   
                 </form>
@@ -34,7 +35,7 @@
         string description = movie.Description.Length > 60 ? $"{movie.Description.Substring(0,movie.Description.IndexOf(".")+1)}" : $"{movie.Description}";
 
         <div class="col col-md-3 mt-5">
-            <div class="card " style="width: 18rem;">
+            <div class="card" style="width: 18rem;">
                 @if (!string.IsNullOrEmpty(movie.ImageUrl))
                 {
                     <img src="@($"/images/{movie.ImageUrl}")" class="card-img-top">                  
@@ -44,8 +45,7 @@
                         <h5 class="card-title">@movie.Title</h5>
                         @if (User.IsAuthenticated())
                         {
-                            <a asp-all-route-data="@movie.RouteValues(Model, User.UserId())" asp-action="AddToFavourites"><i class="@(movie.Id.MovieExists(User.UserId(), movie.UserMovies)) favourite-star fa-star"></i></a>
-
+                            <a asp-all-route-data="@MovieHelper.RouteValues(Model, movie.Id)" asp-action="AddToFavourites"><i class="@(MovieHelper.IsInFavourites(movie.Id,User.UserId(), movie.UserMovies)) favourite-star fa-star"></i></a>
                         }                
                     </div>
                    

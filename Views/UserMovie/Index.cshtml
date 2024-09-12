@@ -1,0 +1,38 @@
+﻿@using MovieWeb.ViewModels
+@model FavouriteListViewModel
+
+
+<div class="row mt-5 offset-5">
+    <h5>@($"{@Model.PaginationModel.TotalResult} movies")</h5>
+</div>
+<div class="row mt-lg-4">
+    @foreach (var userMovie in Model.PaginationModel.CurrentPageList)
+    {
+        string description = userMovie.Movie.Description.Length > 60 ? $"{userMovie.Movie.Description.Substring(0, userMovie.Movie.Description.IndexOf(".") + 1)}" : $"{userMovie.Movie.Description}";
+
+        <div class="col col-md-3 mt-5">
+            <div class="card " style="width: 18rem;">
+                @if (!string.IsNullOrEmpty(userMovie.Movie.ImageUrl))
+                {
+                    <img src="@($"/images/{userMovie.Movie.ImageUrl}")" class="card-img-top">
+                }              
+                <div class="card-body">
+                    <div class="d-flex">
+                        <h5 class="card-title">@userMovie.Movie.Title</h5>
+                    </div>
+                   
+                    <p class="card-text">@description</p>
+
+                    <div class="d-flex">
+                        <a asp-route-id="@userMovie.Movie.Id" asp-controller="Movie" asp-action="Details" class="btn btn-primary">Read more</a>                      
+                    </div>
+                  
+                </div>
+            </div>
+        </div>
+    }
+
+</div>
+<div class="row mt-4 offset-5">
+    <partial name="~/Views/Shared/_PaginationPartial.cshtml" model="@Model.PaginationModel" />
+</div>

@@ -4,6 +4,7 @@ namespace MovieWeb.Models
 {
     public class SearchModel
     {
+        [FromQuery(Name = "searchValue")]
         public string Search { get; set; }
 
         [FromQuery(Name = "categoryId")]

@@ -4,7 +4,7 @@
     <h2>@(Model.Id>0? Model.Title:"Create movie")</h2>
     <input type="hidden" asp-for=Id />
     <div class="row g-2">
-        @if (Model.File != null)
+        @if (Model.File is not null && Model.Id>0)
         {
             <div class="col col-md-4">
                 <img src="@($"/images/{Model.File.FileName}")" class="img-thumbnail" />
@@ -13,7 +13,6 @@
         <div class="col col-md-4">
             <label asp-for=File class="form-label">Image</label>
             <input asp-for=File type="file" class="form-control" />
-            <span asp-validation-for=File class="text-danger"></span>
         </div>
     </div>
     <div class="row g-2">
@@ -38,8 +37,8 @@
         </div>
     </div>
     <div class="d-grid gap-2 d-md-block">
-        <button type="submit" class="btn btn-secondary">Spara</button>
-        <a class="btn btn-outline-dark" asp-action="Index">Tillbaka</a>
+        <button type="submit" class="btn btn-secondary">Save</button>
+        <a class="btn btn-outline-dark" asp-action="Index">Back</a>
     </div>
 </form>
 

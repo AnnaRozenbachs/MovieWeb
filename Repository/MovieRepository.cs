@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MovieWeb.Data;
 using MovieWeb.Models;
-using SQLitePCL;
 
 namespace MovieWeb.Repository
 {

@@ -1,4 +1,6 @@
 ﻿
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.EntityFrameworkCore;
 using MovieWeb.Data;
 
 namespace MovieWeb.Repository

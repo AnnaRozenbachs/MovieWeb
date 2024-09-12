@@ -5,27 +5,41 @@ namespace MovieWeb.Service
 {
     public class UserMovieService : IUserMovieService
     {
-        private IRepository<UserMovie> _userMovieRepository;
-        public UserMovieService(IRepository<UserMovie> userMovieRepository)
+        private IUserMovieRepository _userMovieRepository;
+        public UserMovieService(IUserMovieRepository userMovieRepository)
         {
             _userMovieRepository = userMovieRepository;
         }
-        public void AddMovieToFavourites(int userMovieId, int movieId, string userId)
+        public void AddMovieToFavourites(int movieId, string userId)
         {
-            if (userMovieId > 0)
+            var userMovie = GetExistingMovie(movieId, userId);
+            if (userMovie is not null)
             {
-                var userMovie = _userMovieRepository.GetById(userMovieId);
                 _userMovieRepository.Delete(userMovie);
             }
             else
             {
-                var userMovie = new UserMovie
+                userMovie = new UserMovie
                 {
                     UserId = userId,
                     MovieId = movieId
                 };
                 _userMovieRepository.Add(userMovie);
             }
+        }
+
+        public UserMovie GetExistingMovie(int movieId, string userId)
+        {
+            var userMovie = _userMovieRepository.Get().ToList()
+                .Find(m => m.MovieId == movieId && m.UserId == userId);
+            return userMovie;
+        }
+
+        public IEnumerable<UserMovie> GetFavouriteMovies(string userId)
+        {
+            var userMovieList = _userMovieRepository.GetUserMoviesIncludedMovies()
+                .Where(u=>u.UserId==userId);
+            return userMovieList;
         }
 
     }

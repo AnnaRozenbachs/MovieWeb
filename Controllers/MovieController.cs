@@ -18,7 +18,7 @@ namespace MovieWeb.Controllers
         public MovieController(IMovieService movieService,IFileService fileService, IPaginationService<Movie> paginationService, IUserMovieService userMovieService) 
         {
             _movieService = movieService;
-            _fileService = fileService;
+            _fileService = fileService; 
             _paginationService = paginationService;
             _userMovieService = userMovieService;
         }
@@ -50,15 +50,16 @@ namespace MovieWeb.Controllers
             return View(model);
         }
 
-        public IActionResult AddToFavourites(FavouriteViewModel model)
+        public IActionResult AddToFavourites(Dictionary<string, string> data)
         {
+            var parameters = data.Where(k => !k.Key.Contains("movieId")).ToDictionary();    
             var userId = User.UserId();
             if (userId is null)
             {
                 return NotFound();
             }
-            _userMovieService.AddMovieToFavourites(int.Parse(model.UserMovieId), int.Parse(model.MovieId), userId);
-            return RedirectToAction(nameof(Index),new { page= page, searchValue = model.SearchValue, categoryId = model.CategoryId });
+            _userMovieService.AddMovieToFavourites(int.Parse(data["movieId"]), userId);
+            return RedirectToAction(nameof(Index), parameters);
             
         }
 

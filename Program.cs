@@ -24,12 +24,14 @@ namespace MovieWeb
             builder.Services.AddScoped<IMovieService, MovieService>();
 
             builder.Services.AddScoped<IMovieRepository, MovieRepository>();
+            builder.Services.AddScoped<IUserMovieRepository, UserMovieRepository>();
 
             builder.Services.AddScoped<IUserMovieService, UserMovieService>();
             builder.Services.AddScoped<IFileService, FileService>();
             builder.Services.AddScoped<IRepository<Movie>, Repository<Movie>>();
             builder.Services.AddScoped<IRepository<UserMovie>, Repository<UserMovie>>();
             builder.Services.AddScoped<IPaginationService<Movie>, PaginationServic<Movie>>();
+            builder.Services.AddScoped<IPaginationService<UserMovie>, PaginationServic<UserMovie>>();
 
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>()
